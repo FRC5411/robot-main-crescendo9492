@@ -4,11 +4,30 @@
 
 package frc.robot.subsystems.climb;
 
+import frc.robot.subsystems.climb.*;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/*
+ * Class 
+ */
+
 public class Climb extends SubsystemBase {
-  /** Creates a new Climb. */
-  public Climb() {}
+  
+  
+  /* ---------------------------------------- Constructor ---------------------------------------- */
+  public Climb() {
+    
+  }
+
+  /* ---------------------------------------- Mutators ---------------------------------------- */
+
+  
+  
+
+  /* ---------------------------------------- Accessors ---------------------------------------- */
+  
 
   @Override
   public void periodic() {

@@ -12,10 +12,13 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private RobotContainer m_robot = new RobotContainer();
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+
+    m_robot.configureSwerve();
   }
 
   @Override
@@ -24,10 +27,14 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robot.setBrakeIdle(true);
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    m_robot.setBrakeIdle(true);
+  }
 
   @Override
   public void disabledExit() {}
