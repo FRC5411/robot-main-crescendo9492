@@ -4,11 +4,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.drive.DriveCommand;
 import frc.robot.subsystems.drive.Swerve;
 
 public class RobotContainer {
@@ -21,14 +20,16 @@ public class RobotContainer {
     driveController = new XboxController(Constants.k_driverControllerID);
 
     swerve.setDefaultCommand(
-    new RunCommand(() -> swerve.drive(
-        () -> MathUtil.applyDeadband(driveController.getLeftY(), 0.2), 
-        () -> MathUtil.applyDeadband(driveController.getLeftX(), 0.2), 
-        () -> MathUtil.applyDeadband(driveController.getRightX(), 0.2),
-        true,
-        false
-    ), swerve));
+      new DriveCommand(
+        swerve, 
+        () -> -driveController.getLeftY(), 
+        () -> driveController.getLeftX(), 
+        () -> driveController.getRightX(), 
+        () -> driveController.getRightBumper()
+      )
+    );
   }
+
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
