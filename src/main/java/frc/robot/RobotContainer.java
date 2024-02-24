@@ -4,20 +4,20 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.subsystems.drive.Swerve;
 
 public class RobotContainer {
   
   private Swerve swerve;
-  private XboxController driveController;
+  private CommandXboxController driveController;
 
   public RobotContainer() {
     swerve = new Swerve();
-    driveController = new XboxController(Constants.k_driverControllerID);
+    driveController = new CommandXboxController(Constants.driverPort);
 
     swerve.setDefaultCommand(
       new DriveCommand(
@@ -25,10 +25,12 @@ public class RobotContainer {
         () -> -driveController.getLeftY(), 
         () -> driveController.getLeftX(), 
         () -> driveController.getRightX(), 
-        () -> driveController.getRightBumper()
+        true
       )
     );
   }
+
+
 
 
   public Command getAutonomousCommand() {

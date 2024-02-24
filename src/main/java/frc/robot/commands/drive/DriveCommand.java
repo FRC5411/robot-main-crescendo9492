@@ -22,13 +22,13 @@ public class DriveCommand extends Command {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
 
-    private BooleanSupplier robotCentricSup;
+    private Boolean robotCentricSup;
 
     private SlewRateLimiter translationLimiter;
     private SlewRateLimiter strafeLimiter;
     private SlewRateLimiter rotationLimiter;
     
-    public DriveCommand(Swerve robotSwerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup) {
+    public DriveCommand(Swerve robotSwerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, Boolean robotCentricSup) {
         
         this.robotSwerve = robotSwerve;
 
@@ -60,7 +60,7 @@ public class DriveCommand extends Command {
         robotSwerve.swerveDrive(
             new Translation2d(translationVal, strafeVal).times(DriveConstants.maxSpeed), 
             rotationVal * DriveConstants.maxAngularVelocity, 
-            !robotCentricSup.getAsBoolean(), 
+            !robotCentricSup, 
             true);
         
         robotSwerve.odom(translationSup, rotationSup);
