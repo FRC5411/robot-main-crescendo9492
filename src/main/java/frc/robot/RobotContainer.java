@@ -9,19 +9,26 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.shooter.ShooterCommand;
 import frc.robot.subsystems.shooter.ShooterConstants;
-import frc.robot.subsystems.shooter.;
+//import frc.robot.subsystems.shooter.;
 
 
 public class RobotContainer {
   
   public CommandXboxController operatorController;
+  public ShooterCommand shooterCommand = new ShooterCommand();
+
 
   public RobotContainer() {
-    operatorController = new CommandXboxController(Constants.operatorPort);
+    operatorController = new CommandXboxController(ShooterConstants.operatorPort);
+
+    configureBindings();
   }
 
   public void configureBindings() {
+    operatorController.a().whileTrue(new InstantCommand(() -> shooterCommand.startIndexerMotor()));
+    System.out.println("Button being pressed");
   }
 
   public Command getAutonomousCommand() {

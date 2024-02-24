@@ -27,7 +27,7 @@ public class ShooterCommand extends SequentialCommandGroup {
     rightShooterMotor.follow(leftShooterMotor);
     FF = new ArmFeedforward(ShooterConstants.kS, ShooterConstants.kG, ShooterConstants.kV, ShooterConstants.kA);
     PID = new ProfiledPIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD, new TrapezoidProfile.Constraints(ShooterConstants.k_armVelocity, ShooterConstants.k_armAcceleration));
-    addRequirements(shooter);
+    // addRequirements(shooter);
   }
 public void goToIdlePos() {
     double idlePIDCalc = PID.calculate(shooter.getPosition().getDegrees(), ShooterConstants.idleSetpoint);
@@ -47,13 +47,16 @@ public void goToIdlePos() {
       new InstantCommand(() -> goToIntakePos())
     );
   }
+
+
   public void startIndexerMotor() {
     indexerMotor.set(ShooterConstants.k_indexerMotorSpeed);
-    leftShooterMotor.set(0.5);
-    rightShooterMotor.set(0.5);
+    //leftShooterMotor.set(1.0);
+    //rightShooterMotor.set(1.0);
   }
   public void shoot() {
-    leftShooterMotor.set(ShooterConstants.k_shooterMotorSpeed);
+    //leftShooterMotor.set(ShooterConstants.k_shooterMotorSpeed);
+    //rightShooterMotor.set(ShooterConstants.k_shooterMotorSpeed);
   }
   // Called when the command is initially scheduled.
  /*@Override

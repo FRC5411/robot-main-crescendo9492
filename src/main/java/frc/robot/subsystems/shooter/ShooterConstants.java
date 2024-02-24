@@ -21,12 +21,14 @@ public class ShooterConstants {
         public static final double idleSetpoint = 0.0;
         public static final double intakeSetpoint = 0.0;
         // Shooter and indexer motor speeds (between -1.0 and 1.0) - TO BE TUNED:
-        public static final double k_indexerMotorSpeed = 0.0;
-        public static final double k_shooterMotorSpeed = 0.0;
+        public static final double k_indexerMotorSpeed = 1.0;
+        public static final double k_shooterMotorSpeed = 1.0;
         // Soft limit values - TO BE TUNED:
         public static final double k_lowerBound = 0.0;
         public static final double k_upperBound = 0.0;
 
+        // Temporary port:
+        public static final int operatorPort = 1;
        
       }
 
