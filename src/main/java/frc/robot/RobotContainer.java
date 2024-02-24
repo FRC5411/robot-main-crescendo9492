@@ -4,44 +4,33 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.LauncherSubsystem;
-import frc.utils.GamepadUtils;
-import java.util.List;
-
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.shooter.ShooterConstants;
+import frc.robot.subsystems.shooter.;
 
 
 public class RobotContainer {
-  XboxController operatorController = new XboxController(ShooterConstants.kOperatorPort);
-
-  private final LauncherSubsystem m_launcher = new LauncherSubsystem();
+  
+  public CommandXboxController operatorController;
 
   public RobotContainer() {
-    configureBindings();
-
-    m_launcher.setDefaultCommand(new RunCommand(() -> m_launcher.stopLauncher(), m_launcher));
+    operatorController = new CommandXboxController(Constants.operatorPort);
   }
 
-  private void configureBindings() {
-    new JoystickButton(operatorController, XboxController.Button.kRightBumper.value)
-        .whileTrue(new RunCommand(() -> m_launcher.runLauncher(), m_launcher));
-
-
+  public void configureBindings() {
   }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }
-}
+
+  }
+
+
+  
+
+
