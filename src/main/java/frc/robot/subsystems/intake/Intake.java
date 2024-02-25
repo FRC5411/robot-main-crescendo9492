@@ -31,7 +31,7 @@ public class Intake extends SubsystemBase {
     indexerMotor.set(IntakeConstants.k_indexerSpeed);
   }
 
-  public void outake() {
+  public void outtake() {
     indexerMotor.set(-IntakeConstants.k_indexerSpeed);
   }
 

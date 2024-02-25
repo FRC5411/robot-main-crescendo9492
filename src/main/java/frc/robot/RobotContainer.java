@@ -29,8 +29,8 @@ public class RobotContainer {
       .whileTrue(new InstantCommand(() -> intake.intake()))
       .onFalse(new InstantCommand(() -> intake.zero()));
 
-    operator.leftBumper()
-      .whileTrue(new InstantCommand(() -> intake.outake()))
+    operator.a()
+      .whileTrue(new InstantCommand(() -> intake.outtake()))
       .onFalse(new InstantCommand(() -> intake.zero()));
   }
 
