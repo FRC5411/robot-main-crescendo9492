@@ -49,7 +49,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double feedForward() {
-    return ArmConstants.k_armFeedforward.calculate(getPosition().getRadians() + ArmConstants.k_armEncoderOffset.getRadians(), ArmConstants.k_armSpeed);
+    return ArmConstants.k_armFeedforward.calculate(getPosition().getRadians(), ArmConstants.k_armSpeed);
   }
 
   public void setSpeed(double armSpeed) {
@@ -70,7 +70,7 @@ public class Arm extends SubsystemBase {
   }
 
   public Rotation2d getPosition() {
-    return Rotation2d.fromRotations(armEncoder.getPosition());
+    return Rotation2d.fromRotations(armEncoder.getPosition() + ArmConstants.k_armEncoderOffset.getRotations());
   }
 
   public void configure() {
