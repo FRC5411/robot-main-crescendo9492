@@ -6,9 +6,26 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmCommand;
 
 public class RobotContainer {
+
+  private Arm arm;
+
+  public CommandXboxController operator;
+
   public RobotContainer() {
+
+    operator = new CommandXboxController(Constants.k_operatorID);
+
+    arm = new Arm(operator.getHID());
+
+    arm.setDefaultCommand(new ArmCommand(
+      () -> operator.getRightY(),
+      arm
+    ));
     
     configureBindings();
   }
