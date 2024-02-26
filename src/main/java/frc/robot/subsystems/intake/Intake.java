@@ -4,11 +4,26 @@
 
 package frc.robot.subsystems.intake;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  public Intake() {}
+  private DigitalInput indexerSensor;
+ 
+  public Intake() {
+    indexerSensor = new DigitalInput(IntakeConstants.sensorPort);
+  }
+
+  public boolean getNoteDetected() {
+    if (indexerSensor.get()) {
+      System.out.println("Note detected! ");
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
   @Override
   public void periodic() {
