@@ -54,7 +54,8 @@ public class Arm extends SubsystemBase {
 
   public void setSpeed(double armSpeed) {
     if (isInBound(getPosition(), armSpeed)) {
-      armController.setReference(armSpeed, ControlType.kVoltage, 0);
+      armMotor.set(armSpeed);
+      // armController.setReference(getPosition(), ControlType.kPosition, 0)
     }
     else {
       controller.setRumble(RumbleType.kBothRumble, Constants.k_rumbleStrength);
@@ -82,10 +83,12 @@ public class Arm extends SubsystemBase {
     armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)ArmConstants.k_lowerBound);
     
     armEncoder.setPositionConversionFactor(ArmConstants.k_positionConversionFactor);
+    armEncoder.setVelocityConversionFactor(ArmConstants.k_velocityConversionFactor);
 
     armController.setP(ArmConstants.k_armP);
     armController.setI(ArmConstants.k_armI);
     armController.setD(ArmConstants.k_armD);
+    armController.setFeedbackDevice(armEncoder);
 
     armMotor.burnFlash();
     armMotor.clearFaults();
