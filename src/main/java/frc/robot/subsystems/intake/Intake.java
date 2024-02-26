@@ -12,9 +12,10 @@ public class Intake extends SubsystemBase {
   private DigitalInput indexerSensor;
  
   public Intake() {
-    indexerSensor = new DigitalInput(IntakeConstants.k_sensorPort);
+    indexerSensor = new DigitalInput(IntakeConstants.k_sensorID);
   }
 
+  // Detects whether note is in intake, will be connected to motors at a later time
   public boolean getNoteDetected() {
     if (indexerSensor.get()) {
       System.out.println("Note detected! ");
