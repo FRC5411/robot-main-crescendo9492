@@ -6,7 +6,7 @@ public class LightConstants {
   public static final int k_LEDPort = 1;
 
   // Length of LEDs:
-  public static final int k_length = 15;w
+  public static final int k_length = 15;
 
   // Wait Command length to set time for LEDs to blink:
   public static final double k_waitTime = 0.5;

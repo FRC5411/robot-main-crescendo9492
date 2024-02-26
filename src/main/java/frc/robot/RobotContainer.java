@@ -17,7 +17,7 @@ public Light lights;
 
     lights = new Light();
 
-    driverController = new CommandXboxController(Constants.operatorPort);
+    driverController = new CommandXboxController(Constants.k_operatorID);
 
     lights.setLEDsPurple();
 
