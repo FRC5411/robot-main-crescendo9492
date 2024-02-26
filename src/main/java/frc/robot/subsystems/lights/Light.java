@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.LEDs;
+package frc.robot.subsystems.lights;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
@@ -12,17 +12,17 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class LEDs extends SubsystemBase {
+public class Light extends SubsystemBase {
 
   public AddressableLED LEDs;
   public AddressableLEDBuffer LEDBuffer;
 
   
 
-  public LEDs() {
-    LEDs = new AddressableLED(LEDConstants.k_LEDPort);
+  public Light() {
+    LEDs = new AddressableLED(LightConstants.k_LEDPort);
     
-    LEDBuffer = new AddressableLEDBuffer(LEDConstants.k_length);
+    LEDBuffer = new AddressableLEDBuffer(LightConstants.k_length);
     LEDs.setLength(LEDBuffer.getLength());
 
     LEDs.setData(LEDBuffer);
@@ -38,8 +38,8 @@ public class LEDs extends SubsystemBase {
     }
 
     LEDs.setData(LEDBuffer);
-    // LEDConstants.setPurple = true;
-
+    LightConstants.k_isOrange = false;
+    LightConstants.k_isBlue = false;
   }
 
   public void setLEDsOrange() {
@@ -48,8 +48,8 @@ public class LEDs extends SubsystemBase {
     }
 
     LEDs.setData(LEDBuffer);
-    LEDConstants.k_isOrange = true;
-
+    LightConstants.k_isOrange = true;
+    LightConstants.k_isBlue = false;
   }
 
   public void setLEDsBlue() {
@@ -58,8 +58,8 @@ public class LEDs extends SubsystemBase {
     }
 
     LEDs.setData(LEDBuffer);
-    LEDConstants.k_isBlue = true;
-
+    LightConstants.k_isBlue = true;
+    LightConstants.k_isOrange = false;
   }
 
   public void blinkLEDsOrange() {
@@ -71,30 +71,24 @@ public class LEDs extends SubsystemBase {
   public Command blinkLEDs() {
     return new SequentialCommandGroup (
       new InstantCommand(() -> blinkLEDsOrange()),
-      new WaitCommand(LEDConstants.k_waitTime),
+      new WaitCommand(LightConstants.k_waitTime),
       new InstantCommand(() -> setLEDsPurple())
     );
   }
   
   public Command toggleOrange() {
-    LEDConstants.k_isBlue = false;
-    if (LEDConstants.k_isOrange) {
-      LEDConstants.k_isOrange = false;
+    if (LightConstants.k_isOrange) {
       return new InstantCommand(() -> setLEDsPurple());
     }
 
-    LEDConstants.k_isOrange = true;
     return new InstantCommand(() -> setLEDsOrange());
   }
 
   public Command toggleBlue() {
-    LEDConstants.k_isOrange = false;
-    if (LEDConstants.k_isBlue) {
-      LEDConstants.k_isBlue = false;
+    if (LightConstants.k_isBlue) {
       return new InstantCommand(() -> setLEDsPurple());
     }
 
-    LEDConstants.k_isBlue = true;
     return new InstantCommand(() -> setLEDsBlue());
   }
 

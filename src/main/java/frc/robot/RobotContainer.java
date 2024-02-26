@@ -6,17 +6,21 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.LEDs.LEDConstants;
-import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.lights.Light;
 
 public class RobotContainer {
 public CommandXboxController driverController;
-public LEDs LEDs;
+public Light lights;
 
   public RobotContainer() {
+
+    lights = new Light();
+
     driverController = new CommandXboxController(Constants.operatorPort);
+
+    lights.setLEDsPurple();
+
     configureBindings();
   }
 
@@ -26,11 +30,11 @@ public LEDs LEDs;
     // right bumper = Power up
 
     driverController.leftBumper().onTrue(
-      LEDs.toggleOrange()
+      lights.toggleOrange()
     );
 
     driverController.rightBumper().onTrue(
-      LEDs.toggleBlue()
+      lights.toggleBlue()
     );
     
   }
