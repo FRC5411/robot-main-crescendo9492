@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.vision;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
   /** Creates a new VisionSubsystem. */
@@ -45,8 +44,8 @@ public class Vision extends SubsystemBase {
     backLeft.follow(frontLeft, false);
     backRight.follow(frontRight, false);
 
-    rangeController = new PIDController(VisionConstants.forwardP, VisionConstants.forwardI, VisionConstants.forwardD);
-    aimingController = new PIDController(VisionConstants.angularP, VisionConstants.angularI, VisionConstants.angularD);
+    rangeController = new PIDController(VisionConstants.k_forwardP, VisionConstants.k_forwardI, VisionConstants.k_forwardD);
+    aimingController = new PIDController(VisionConstants.k_angularP, VisionConstants.k_angularI, VisionConstants.k_angularD);
 
   }
 
