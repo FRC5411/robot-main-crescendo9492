@@ -33,7 +33,7 @@ public class Light extends SubsystemBase {
   
   // Purple will be the default color of the LEDs (set to Eclipse)
   public void setLEDsPurple() {
-    for (var i = 0; i < LEDBuffer.getLength(); i++) {
+    for (int i = 0; i < LEDBuffer.getLength(); i++) {
       LEDBuffer.setRGB(i, 174, 55, 255);
     }
 
@@ -43,7 +43,7 @@ public class Light extends SubsystemBase {
   }
 
   public void setLEDsOrange() {
-    for (var i = 0; i < LEDBuffer.getLength(); i++) {
+    for (int i = 0; i < LEDBuffer.getLength(); i++) {
       LEDBuffer.setRGB(i, 255, 94, 5);
     }
 
@@ -53,7 +53,7 @@ public class Light extends SubsystemBase {
   }
 
   public void setLEDsBlue() {
-    for (var i = 0; i < LEDBuffer.getLength(); i++) {
+    for (int i = 0; i < LEDBuffer.getLength(); i++) {
       LEDBuffer.setRGB(i, 85, 206, 255);
     }
 
@@ -63,7 +63,7 @@ public class Light extends SubsystemBase {
   }
 
   public void blinkLEDsOrange() {
-    for (var i = 0; i < LEDBuffer.getLength(); i++) {
+    for (int i = 0; i < LEDBuffer.getLength(); i++) {
       LEDBuffer.setRGB(i, 255, 94, 5);
     }
   }
