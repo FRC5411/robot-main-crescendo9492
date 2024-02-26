@@ -27,8 +27,6 @@ public class Light extends SubsystemBase {
 
     LEDs.setData(LEDBuffer);
     LEDs.start();
-
-    
   }
   
   // Purple will be the default color of the LEDs (set to Eclipse)
@@ -42,6 +40,7 @@ public class Light extends SubsystemBase {
     LightConstants.k_isBlue = false;
   }
 
+  // Solid Orange will be the signal for coopertition bonus (set to Flame)
   public void setLEDsOrange() {
     for (int i = 0; i < LEDBuffer.getLength(); i++) {
       LEDBuffer.setRGB(i, 255, 94, 5);
@@ -52,6 +51,7 @@ public class Light extends SubsystemBase {
     LightConstants.k_isBlue = false;
   }
 
+  // Solid Blue will be the signal for amplification bonus (set to Ocean)
   public void setLEDsBlue() {
     for (int i = 0; i < LEDBuffer.getLength(); i++) {
       LEDBuffer.setRGB(i, 85, 206, 255);
@@ -62,20 +62,16 @@ public class Light extends SubsystemBase {
     LightConstants.k_isOrange = false;
   }
 
-  public void blinkLEDsOrange() {
-    for (int i = 0; i < LEDBuffer.getLength(); i++) {
-      LEDBuffer.setRGB(i, 255, 94, 5);
-    }
-  }
-
-  public Command blinkLEDs() {
+  // Blinking Orange will be the signal for coopertition bonus
+  public Command blinkLEDsOrange() {
     return new SequentialCommandGroup (
-      new InstantCommand(() -> blinkLEDsOrange()),
+      new InstantCommand(() -> setLEDsOrange()),
       new WaitCommand(LightConstants.k_waitTime),
       new InstantCommand(() -> setLEDsPurple())
     );
   }
   
+  // Toggle between Orange and Purple to signal for coopertition bonus
   public Command toggleOrange() {
     if (LightConstants.k_isOrange) {
       return new InstantCommand(() -> setLEDsPurple());
@@ -84,6 +80,7 @@ public class Light extends SubsystemBase {
     return new InstantCommand(() -> setLEDsOrange());
   }
 
+  // Toggle between Blue and Purple to signal for coopertition bonus
   public Command toggleBlue() {
     if (LightConstants.k_isBlue) {
       return new InstantCommand(() -> setLEDsPurple());
