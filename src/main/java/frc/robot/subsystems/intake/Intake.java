@@ -12,7 +12,7 @@ public class Intake extends SubsystemBase {
   private DigitalInput indexerSensor;
  
   public Intake() {
-    indexerSensor = new DigitalInput(IntakeConstants.sensorPort);
+    indexerSensor = new DigitalInput(IntakeConstants.k_sensorPort);
   }
 
   public boolean getNoteDetected() {
