@@ -25,10 +25,12 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    // right bumper intakes note
     operator.rightBumper()
       .whileTrue(new InstantCommand(() -> intake.intake()))
       .onFalse(new InstantCommand(() -> intake.zero()));
 
+    // 'a' button outtakes note
     operator.a()
       .whileTrue(new InstantCommand(() -> intake.outtake()))
       .onFalse(new InstantCommand(() -> intake.zero()));

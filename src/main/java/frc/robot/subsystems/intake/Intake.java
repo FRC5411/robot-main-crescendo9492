@@ -20,21 +20,17 @@ public class Intake extends SubsystemBase {
     indexerMotor = new CANSparkMax(IntakeConstants.k_indexerID, MotorType.kBrushless);
   }
 
-  public void configure() {
-    indexerMotor.setIdleMode(IdleMode.kBrake);
-    indexerMotor.setSmartCurrentLimit(IntakeConstants.k_smartCurrentLimit);
-    indexerMotor.burnFlash();
-    indexerMotor.clearFaults();
-  }
-
+  // Set motor speed to intake note
   public void intake() {
     indexerMotor.set(IntakeConstants.k_indexerSpeed);
   }
 
+  // Set motor speed to outtake note
   public void outtake() {
     indexerMotor.set(-IntakeConstants.k_indexerSpeed);
   }
 
+  // Set motor speed to zero
   public void zero() {
     indexerMotor.set(IntakeConstants.k_indexerZero);
   }
@@ -43,5 +39,13 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Amps", indexerMotor.getOutputCurrent());
+  }
+
+  // motor configurations
+  public void configure() {
+    indexerMotor.setIdleMode(IdleMode.kBrake);
+    indexerMotor.setSmartCurrentLimit(IntakeConstants.k_smartCurrentLimit);
+    indexerMotor.burnFlash();
+    indexerMotor.clearFaults();
   }
 }
