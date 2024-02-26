@@ -19,22 +19,26 @@ public class ShooterCommand extends SequentialCommandGroup {
   private CANSparkMax pivotMotor;
   private ArmFeedforward FF;
   private ProfiledPIDController PID;
+
   public ShooterCommand() {
-    leftShooterMotor = new CANSparkMax(ShooterConstants.leftShooterMotorID, MotorType.kBrushless);
-    rightShooterMotor = new CANSparkMax(ShooterConstants.rightShooterMotorID, MotorType.kBrushless);
-    indexerMotor = new CANSparkMax(ShooterConstants.indexerMotorID, MotorType.kBrushless);
-    pivotMotor = new CANSparkMax(ShooterConstants.pivotMotorID, MotorType.kBrushless);
+    leftShooterMotor = new CANSparkMax(ShooterConstants.k_leftShooterMotorID, MotorType.kBrushless);
+    rightShooterMotor = new CANSparkMax(ShooterConstants.k_rightShooterMotorID, MotorType.kBrushless);
+    indexerMotor = new CANSparkMax(ShooterConstants.k_indexerMotorID, MotorType.kBrushless);
+    pivotMotor = new CANSparkMax(ShooterConstants.k_pivotMotorID, MotorType.kBrushless);
     rightShooterMotor.follow(leftShooterMotor);
     FF = new ArmFeedforward(ShooterConstants.kS, ShooterConstants.kG, ShooterConstants.kV, ShooterConstants.kA);
     PID = new ProfiledPIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD, new TrapezoidProfile.Constraints(ShooterConstants.k_armVelocity, ShooterConstants.k_armAcceleration));
     // addRequirements(shooter);
   }
+
+  // Goes to idle position:
 public void goToIdlePos() {
     double idlePIDCalc = PID.calculate(shooter.getPosition().getDegrees(), ShooterConstants.idleSetpoint);
     double idleFFCalc = FF.calculate(shooter.getPosition().getRadians(), shooter.getVelocity().getRadians());
     // Sets voltage for pivot motor
     shooter.setMotorVolts(idlePIDCalc + idleFFCalc);
   }
+
   // Sequential Command Group - Have motor for intake wheels start running first, then bring down to floor position
   public void goToIntakePos() {
     double floorPIDCalc = PID.calculate(shooter.getPosition().getDegrees(), ShooterConstants.intakeSetpoint);
@@ -49,11 +53,14 @@ public void goToIdlePos() {
   }
 
 
+  // Temporary method to start shooter and intake wheels at the same time for testing purposes
   public void startIndexerMotor() {
     indexerMotor.set(ShooterConstants.k_indexerMotorSpeed);
     //leftShooterMotor.set(1.0);
     //rightShooterMotor.set(1.0);
   }
+
+  // Shoot method:
   public void shoot() {
     //leftShooterMotor.set(ShooterConstants.k_shooterMotorSpeed);
     //rightShooterMotor.set(ShooterConstants.k_shooterMotorSpeed);

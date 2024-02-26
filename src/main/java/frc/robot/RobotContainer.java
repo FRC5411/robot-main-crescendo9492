@@ -21,7 +21,7 @@ public class RobotContainer {
 
 
   public RobotContainer() {
-    operatorController = new CommandXboxController(ShooterConstants.operatorPort);
+    operatorController = new CommandXboxController(ShooterConstants.k_operatorPort);
 
     configureBindings();
   }

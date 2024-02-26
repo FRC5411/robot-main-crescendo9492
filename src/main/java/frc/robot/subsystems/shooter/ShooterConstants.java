@@ -1,9 +1,9 @@
 package frc.robot.subsystems.shooter;
 public class ShooterConstants {
-        public static final int leftShooterMotorID = 15;
-        public static final int rightShooterMotorID = 16;
-        public static final int indexerMotorID = 17;
-        public static final int pivotMotorID = 18;
+        public static final int k_leftShooterMotorID = 15;
+        public static final int k_rightShooterMotorID = 16;
+        public static final int k_indexerMotorID = 17;
+        public static final int k_pivotMotorID = 18;
         // PID constants - TO BE TUNED:
         public static final double kP = 0;
         public static final double kI = 0;
@@ -28,7 +28,8 @@ public class ShooterConstants {
         public static final double k_upperBound = 0.0;
 
         // Temporary port:
-        public static final int operatorPort = 1;
+        public static final int k_operatorPort = 1;
+        public static final int k_driverPort = 0;
        
       }
 
