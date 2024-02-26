@@ -26,7 +26,7 @@ public class DriveConstants {
 
   public static final double stickDeadband = 0.2;
 
-  public static final int pigeonID = 10;
+  public static final int k_pigeonID = 40;
   public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
   /* Drivetrain Constants */

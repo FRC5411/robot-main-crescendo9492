@@ -55,7 +55,7 @@ public class Swerve extends SubsystemBase {
         swerveModules[3].getAngle())
     };
 
-    gyro = new Pigeon2(10);
+    gyro = new Pigeon2(DriveConstants.k_pigeonID);
     zeroGyro();
 
     swerveOdometry = new SwerveDriveOdometry(DriveConstants.swerveKinematics, getYaw(), swerveModulePoses);
