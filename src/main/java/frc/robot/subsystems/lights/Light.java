@@ -62,9 +62,13 @@ public class Light extends SubsystemBase {
     LightConstants.k_isOrange = false;
   }
 
-  // Blinking Orange will be the signal for coopertition bonus
+  // Blinking Orange twice will be the signal for note detection when inside the indexer
   public Command blinkLEDsOrange() {
     return new SequentialCommandGroup (
+      new InstantCommand(() -> setLEDsOrange()),
+      new WaitCommand(LightConstants.k_waitTime),
+      new InstantCommand(() -> setLEDsPurple()),
+      new WaitCommand(LightConstants.k_waitTime),
       new InstantCommand(() -> setLEDsOrange()),
       new WaitCommand(LightConstants.k_waitTime),
       new InstantCommand(() -> setLEDsPurple())
