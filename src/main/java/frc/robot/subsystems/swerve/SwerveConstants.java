@@ -51,7 +51,7 @@ public class SwerveConstants {
   public static final double openLoopRamp = 0.25;
   public static final double closedLoopRamp = 0.0;
 
-  public static final double driveGearRatio = (6.12 / 1.0); // 6.75:1
+  public static final double driveGearRatio = (6.12 / 1.0); // 6.12:1
   public static final double angleGearRatio = ((150 / 7.0) / 1.0); // 12.8:1
 
   public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
@@ -92,6 +92,7 @@ public class SwerveConstants {
   /* Swerve Profiling Values */
   public static final double maxSpeed = 4.5; // meters per second
   public static final double maxAngularVelocity = 2 * Math.PI;
+  public static final double k_setZero = 0.0;
 
   /* Neutral Modes */
   public static final IdleMode driveNeutralMode = IdleMode.kBrake;
@@ -103,14 +104,4 @@ public class SwerveConstants {
 
   /* Angle Encoder Invert */
   public static final boolean canCoderInvert = false;
-
-  public static final PIDConstants tranConstants = new PIDConstants(
-      11,
-      0,
-      0);
-
-  public static final PIDConstants rotConstants = new PIDConstants(
-      0.0,
-      0,
-      0);
 }

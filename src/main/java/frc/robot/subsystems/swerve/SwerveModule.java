@@ -52,28 +52,28 @@ public class SwerveModule {
 
       // FR Module
       case 1:
-        driveMotor = new CANSparkMax(12, MotorType.kBrushless);
-        azimuthMotor = new CANSparkMax(22, MotorType.kBrushless);
+        driveMotor = new CANSparkMax(SwerveConstants.k_FRDriveID, MotorType.kBrushless);
+        azimuthMotor = new CANSparkMax(SwerveConstants.k_FRAzimuthID, MotorType.kBrushless);
 
-        angleEncoder = new CANcoder(32);
+        angleEncoder = new CANcoder(SwerveConstants.k_FRCanID);
         angleOffset = SwerveConstants.k_FREncoderOffset;
         break;
 
       // BL Module
       case 2:
-        driveMotor = new CANSparkMax(13, MotorType.kBrushless);
-        azimuthMotor = new CANSparkMax(23, MotorType.kBrushless);
+        driveMotor = new CANSparkMax(SwerveConstants.k_BLDriveID, MotorType.kBrushless);
+        azimuthMotor = new CANSparkMax(SwerveConstants.k_BLAzimuthID, MotorType.kBrushless);
 
-        angleEncoder = new CANcoder(33);
+        angleEncoder = new CANcoder(SwerveConstants.k_BLCanID);
         angleOffset = SwerveConstants.k_BLEncoderOffset;
         break;
 
       // BR Module
       case 3:
-        driveMotor = new CANSparkMax(14, MotorType.kBrushless);
-        azimuthMotor = new CANSparkMax(24, MotorType.kBrushless);
+        driveMotor = new CANSparkMax(SwerveConstants.k_BRDriveID, MotorType.kBrushless);
+        azimuthMotor = new CANSparkMax(SwerveConstants.k_BRAzimuthID, MotorType.kBrushless);
 
-        angleEncoder = new CANcoder(34);
+        angleEncoder = new CANcoder(SwerveConstants.k_BRCanID);
         angleOffset = SwerveConstants.k_BREncoderOffset;
         break;
 
@@ -116,12 +116,11 @@ public class SwerveModule {
   }
 
   private void setAngle(SwerveModuleState desiredState) {
-    Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.maxSpeed * 0.01)) // Prevent
-                                                                                                          // jittering
+    Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.maxSpeed * 0.01)) // Prevent jittering
         ? lastAngle
         : desiredState.angle;
 
-    azimuthController.setReference(angle.getRotations(), ControlType.kPosition);
+    azimuthController.setReference(angle.getRotations(), ControlType.kPosition, 0);
     lastAngle = angle;
   }
 
@@ -130,15 +129,19 @@ public class SwerveModule {
   }
 
   public Rotation2d getCanCoder() {
-    return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue());
+    return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue() + getCanCoderOffset().getRotations());
   }
 
   public Rotation2d getCanCoderOffset() {
-    return Rotation2d.fromRotations(zeroTo360Scope(getCanCoder()));
+    return Rotation2d.fromRotations(rotationScope(getCanCoder()));
   }
 
   public SwerveModuleState getState() {
     return new SwerveModuleState(driveEncoder.getVelocity(), getAngle());
+  }
+
+  public Rotation2d getAzimuthEncoderPosition() {
+    return Rotation2d.fromRotations(azimuthEncoder.getPosition() + angleOffset.getRotations());
   }
 
   public double getDriveEncoderPosition() {
@@ -146,17 +149,18 @@ public class SwerveModule {
   }
 
   public void resetToAbsolute() {
-    double absolutePosition = zeroTo360Scope(getCanCoder());
+    double absolutePosition = rotationScope(getCanCoder());
 
     REVLibError a = azimuthEncoder.setPosition(absolutePosition);
-
     System.out.println(a);
+
+    azimuthController.setReference(SwerveConstants.k_setZero, ControlType.kPosition, 0);
+    lastAngle = Rotation2d.fromRotations(SwerveConstants.k_setZero);
   }
 
-  public double zeroTo360Scope(Rotation2d rotations) {
+  public double rotationScope(Rotation2d rotations) {
     rotations.plus(angleOffset);
-    if (rotations.getRotations() < 0)
-      rotations.plus(Rotation2d.fromRotations(1));
+    if (rotations.getRotations() < 0) rotations.plus(Rotation2d.fromRotations(1));
     return rotations.getRotations();
   }
 
