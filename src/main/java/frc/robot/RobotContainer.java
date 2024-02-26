@@ -16,7 +16,7 @@ public CommandXboxController driverController;
 public LEDs LEDs;
 
   public RobotContainer() {
-    driverController = new CommandXboxController(Constants.operatorPort);
+    driverController = new CommandXboxController(Constants.driverPort);
     configureBindings();
   }
 
@@ -32,7 +32,7 @@ public LEDs LEDs;
     driverController.rightBumper().onTrue(
       LEDs.toggleBlue()
     );
-    
+
   }
 
   public Command getAutonomousCommand() {
