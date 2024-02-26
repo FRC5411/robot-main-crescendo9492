@@ -36,7 +36,7 @@ public Light lights;
     driverController.rightBumper().onTrue(
       lights.toggleBlue()
     );
-    
+
   }
 
   public Command getAutonomousCommand() {
