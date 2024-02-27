@@ -28,7 +28,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    // right bumper intakes note
+    // right bumper intakes note and retracts to move note away from shooter wheels
     operator.rightBumper()
       .whileTrue(new InstantCommand(() -> intake.intake()))
       .onFalse(intake.retract());
@@ -38,12 +38,12 @@ public class RobotContainer {
       .whileTrue(new InstantCommand(() -> intake.outtake()))
       .onFalse(new InstantCommand(() -> intake.zero()));
 
-    // Left bumper shoots Speaker
+    // Left bumper shoots Speaker, now shootSpeaker also includes moving intake also.
     operator.leftBumper()
       .whileTrue(new InstantCommand(() -> shooter.shootSpeaker()))
       .onFalse(new InstantCommand(() -> shooter.zero()));
 
-    // Left joystick click/roll shoots amp, binding to be added at a later date
+    // Left joystick CLICK shoots amp, also moves intake using one button
     operator.leftStick()
       .whileTrue(new InstantCommand(() -> shooter.shootAmp()))
       .onFalse(new InstantCommand(() -> shooter.zero()));
