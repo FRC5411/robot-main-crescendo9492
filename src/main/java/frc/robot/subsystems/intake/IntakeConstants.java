@@ -6,5 +6,5 @@ public class IntakeConstants {
     public final static double k_indexerZero = 0.0;
     public final static int k_smartCurrentLimit = 40;
 
-    public static final long k_waitTime = 100;
+    public static final long k_waitTime = 500;
 }
