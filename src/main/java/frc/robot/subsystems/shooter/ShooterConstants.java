@@ -1,11 +1,13 @@
 package frc.robot.subsystems.shooter;
 
 public class ShooterConstants {
-    public final static int k_leftShootMotorID = 15;
-    public final static int k_rightShootMotorID = 16;
-    public final static int k_smartCurrentLimit = 40;
-    public final static double k_shootSpeaker = 1;
-    public final static double k_shootAmp = 0.5;
-    public final static double k_shootZero = 0.0;
-    public final static boolean k_isInverted = true;
+    public static final int k_leftShootMotorID = 15;
+    public static final int k_rightShootMotorID = 16;
+    public static final int k_smartCurrentLimit = 40;
+    public static final double k_shootSpeaker = 1.0;
+    public static final double k_shootAmp = 0.35;
+    public static final double k_shootZero = 0.0;
+    public static final boolean k_isInverted = true;
+
+    public static final long k_waitTime = 1000; // milliseconds
 }

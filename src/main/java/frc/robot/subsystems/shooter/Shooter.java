@@ -8,34 +8,72 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.intake.Intake;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
+  private Intake intake;
+
   private CANSparkMax leftShootMotor;
   private CANSparkMax rightShootMotor;
 
-  public Shooter() {
+  public Shooter(Intake intake) {
+    this.intake = intake;
     leftShootMotor = new CANSparkMax(ShooterConstants.k_leftShootMotorID, MotorType.kBrushless);
     rightShootMotor = new CANSparkMax(ShooterConstants.k_rightShootMotorID, MotorType.kBrushless);
 
-    rightShootMotor.follow(leftShootMotor, !ShooterConstants.k_isInverted);
     leftShootMotor.setInverted(ShooterConstants.k_isInverted);
   }
 
   // Set motor speeds to the speed needed to score Speaker
-  public void shootSpeaker() {
+  public void setSpeakerSpeed() {
     leftShootMotor.set(ShooterConstants.k_shootSpeaker);
+    rightShootMotor.set(ShooterConstants.k_shootSpeaker);
   }
 
   // Set motor speeds to the speed needed to score Amp, if different from Speaker
-  public void shootAmp() {
+  public void setAmpSpeed() {
     leftShootMotor.set(ShooterConstants.k_shootAmp);
+    rightShootMotor.set(ShooterConstants.k_shootAmp);
   }
 
   // Set motor speeds to zero
   public void zero() {
     leftShootMotor.set(ShooterConstants.k_shootZero);
+    rightShootMotor.set(ShooterConstants.k_shootZero);
+  }
+
+  // Command to rev up shooter and run intake to shoot speaker
+  public Command shootSpeaker() {
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> setSpeakerSpeed()),
+      new InstantCommand(() -> waitCommand()),
+      new InstantCommand(() -> intake.intake())
+    );
+  }
+
+  // Command to rev up shooter and run intake to shoot amp
+  public Command shootAmp() {
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> setAmpSpeed()),
+      new InstantCommand(() -> waitCommand()),
+      new InstantCommand(() -> intake.intake())
+    );
+  }
+
+  // Custom wait command to catch exceptions
+  public void waitCommand() {
+    try {
+      wait(ShooterConstants.k_waitTime);
+    }
+    catch (Exception e) {
+      System.err.println(e);
+    }
   }
 
   @Override
@@ -47,7 +85,7 @@ public class Shooter extends SubsystemBase {
   public void configure(CANSparkMax motor) {
     motor.setIdleMode(IdleMode.kBrake);
     motor.setSmartCurrentLimit(ShooterConstants.k_smartCurrentLimit);
-    motor.burnFlash();
+    // motor.burnFlash();
     motor.clearFaults();
   }
 }

@@ -9,7 +9,11 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.shooter.ShooterConstants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
@@ -35,6 +39,25 @@ public class Intake extends SubsystemBase {
     indexerMotor.set(IntakeConstants.k_indexerZero);
   }
 
+  // Command to pull back note away from shooter wheels when intake button is released
+  public Command retract() {
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> outtake()),
+      new InstantCommand(() -> waitCommand()),
+      new InstantCommand(() -> zero())
+    );
+  }
+
+    // Custom wait command to catch exceptions
+  public void waitCommand() {
+    try {
+      wait(IntakeConstants.k_waitTime);
+    }
+    catch (Exception e) {
+      System.err.println(e);
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -45,7 +68,7 @@ public class Intake extends SubsystemBase {
   public void configure() {
     indexerMotor.setIdleMode(IdleMode.kBrake);
     indexerMotor.setSmartCurrentLimit(IntakeConstants.k_smartCurrentLimit);
-    indexerMotor.burnFlash();
+    // indexerMotor.burnFlash();
     indexerMotor.clearFaults();
   }
 }
