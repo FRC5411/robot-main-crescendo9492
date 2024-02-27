@@ -12,7 +12,9 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -27,6 +29,7 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder armEncoder;
   private SparkPIDController armController;
 
+
   private XboxController controller;
 
   public Arm(XboxController controller) {
@@ -34,6 +37,7 @@ public class Arm extends SubsystemBase {
     this.controller = controller;
 
     armMotor = new CANSparkMax(ArmConstants.k_armMotorID, MotorType.kBrushless);
+    
 
     armEncoder = armMotor.getEncoder();
     armController = armMotor.getPIDController();
@@ -46,6 +50,20 @@ public class Arm extends SubsystemBase {
     if (voltage > 0) setSpeed(ArmConstants.k_armSpeed + feedForward());
     else if (voltage == 0) setSpeed(feedForward());
     else setSpeed(-ArmConstants.k_armSpeed + feedForward());
+  }
+
+  public void goToIntakePos() {
+    PID(ArmConstants.k_intakeSetpoint);
+    feedForward();
+  }
+
+  public void goToShootPos() {
+    PID(ArmConstants.k_shootSetpoint);
+    feedForward();
+  }
+
+  public double PID(double setpoint) {
+    return ArmConstants.k_armPID.calculate(getPosition().getRotations(), setpoint);
   }
 
   public double feedForward() {

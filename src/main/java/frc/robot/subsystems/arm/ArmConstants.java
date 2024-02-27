@@ -1,7 +1,9 @@
 package frc.robot.subsystems.arm;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class ArmConstants {
     public static final int k_armMotorID = 18;
@@ -18,7 +20,13 @@ public class ArmConstants {
 
     public static final Rotation2d k_armEncoderOffset = Rotation2d.fromRotations(0.0);
     public static final double k_armFreeSpeed = 5676.0 * k_velocityConversionFactor;
+
+    // Feed Forward, PID, and setpoint constants - TO BE CONFIGURED:
     public static final ArmFeedforward k_armFeedforward = new ArmFeedforward(0.0, 3.0, 12.0 / k_armFreeSpeed, 0.0);
+    public static final ProfiledPIDController k_armPID = new ProfiledPIDController(0.0, 0.0, 0.0, 
+        new TrapezoidProfile.Constraints(0.0, 0.0));
+    public static final double k_intakeSetpoint = 0.0;
+    public static final double k_shootSetpoint = 0.0;
 
     public static final double k_armDeadband = 0.2;
     public static final double k_upperBound = 0.0 + k_armEncoderOffset.getRotations();
