@@ -6,20 +6,16 @@ package frc.robot.subsystems.arm;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
   /** Creates a new Climb. */
@@ -27,60 +23,59 @@ public class Arm extends SubsystemBase {
   private CANSparkMax armMotor;
 
   private RelativeEncoder armEncoder;
-  private SparkPIDController armController;
-
-
-  private XboxController controller;
+  private ProfiledPIDController armController;
+  private ArmFeedforward feedForward;
 
   public Arm(XboxController controller) {
 
-    this.controller = controller;
-
     armMotor = new CANSparkMax(ArmConstants.k_armMotorID, MotorType.kBrushless);
     
-
     armEncoder = armMotor.getEncoder();
-    armController = armMotor.getPIDController();
+    armController = ArmConstants.k_armPID;
+    feedForward = ArmConstants.k_armFeedforward;
 
     configure();
   }
 
+  // Moves arm down to pick up note
+  public void goToIntakePos() {
+    setSpeed(setPID(ArmConstants.k_intakeSetpoint) + setfeedForward()); 
+  }
+
+  // Moves arm up to shoot note
+  public void goToShootPos() {
+    setSpeed(setPID(ArmConstants.k_shootSetpoint) + setfeedForward());
+  }
+
+  // Depending on the value of the joysticks, move the arm up or down
   public void runArm(double voltage) {
 
-    if (voltage > 0) setSpeed(ArmConstants.k_armSpeed + feedForward());
-    else if (voltage == 0) setSpeed(feedForward());
-    else setSpeed(-ArmConstants.k_armSpeed + feedForward());
+    if (voltage > 0) setSpeed(ArmConstants.k_armSpeed + setfeedForward());
+    else if (voltage == 0) setSpeed(setfeedForward());
+    else setSpeed(-ArmConstants.k_armSpeed + setfeedForward());
   }
 
-  public void goToIntakePos() {
-    PID(ArmConstants.k_intakeSetpoint);
-    feedForward();
+  // Calculate the motor speed based on PIDs
+  public double setPID(double setpoint) {
+    return armController.calculate(getPosition().getRotations(), setpoint);
   }
 
-  public void goToShootPos() {
-    PID(ArmConstants.k_shootSetpoint);
-    feedForward();
+  // Calculate the speed to move the arm up and down at the same speed (by taking into account gravity)
+  public double setfeedForward() {
+    return feedForward.calculate(getPosition().getRadians(), ArmConstants.k_armSpeed);
   }
 
-  public double PID(double setpoint) {
-    return ArmConstants.k_armPID.calculate(getPosition().getRotations(), setpoint);
-  }
-
-  public double feedForward() {
-    return ArmConstants.k_armFeedforward.calculate(getPosition().getRadians(), ArmConstants.k_armSpeed);
-  }
-
+  // Sets the speed of the motors if it is within the bounds of the robot
   public void setSpeed(double armSpeed) {
     if (isInBound(getPosition(), armSpeed)) {
       armMotor.set(armSpeed);
-      // armController.setReference(getPosition(), ControlType.kPosition, 0)
     }
     else {
-      controller.setRumble(RumbleType.kBothRumble, Constants.k_rumbleStrength);
-      armMotor.set(feedForward());
+      armMotor.set(ArmConstants.k_speedZero);
     }
   }
 
+  // Checks if the arm is within its upper and lower bounds
   public boolean isInBound(Rotation2d setpoint, double armSpeed) {
 
     if (setpoint.getRotations() > ArmConstants.k_upperBound && armSpeed > 0.0) return false;
@@ -88,10 +83,12 @@ public class Arm extends SubsystemBase {
     return true;
   }
 
+  // Get the position of the encdoer, taking into account offsets
   public Rotation2d getPosition() {
     return Rotation2d.fromRotations(armEncoder.getPosition() + ArmConstants.k_armEncoderOffset.getRotations());
   }
 
+  // configure the arm motor, encoder, and PID controller
   public void configure() {
     armMotor.setIdleMode(IdleMode.kBrake);
     armMotor.setSmartCurrentLimit(ArmConstants.k_smartCurrentLimit);
@@ -106,7 +103,7 @@ public class Arm extends SubsystemBase {
     armController.setP(ArmConstants.k_armP);
     armController.setI(ArmConstants.k_armI);
     armController.setD(ArmConstants.k_armD);
-    armController.setFeedbackDevice(armEncoder);
+    armController.setTolerance(ArmConstants.k_tolerance);
 
     armMotor.burnFlash();
     armMotor.clearFaults();

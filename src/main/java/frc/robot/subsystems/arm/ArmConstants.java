@@ -9,6 +9,7 @@ public class ArmConstants {
     public static final int k_armMotorID = 18;
     public static final int k_smartCurrentLimit = 40;
     public static final double k_armSpeed = 0.5;
+    public static final double k_speedZero = 0.0;
 
     public static final double k_armGearRatio = (1.0 / 25.0) * (28.0 / 50.0) * (16.0 / 64.0);
     public static final double k_positionConversionFactor = k_armGearRatio;
@@ -23,10 +24,10 @@ public class ArmConstants {
 
     // Feed Forward, PID, and setpoint constants - TO BE CONFIGURED:
     public static final ArmFeedforward k_armFeedforward = new ArmFeedforward(0.0, 3.0, 12.0 / k_armFreeSpeed, 0.0);
-    public static final ProfiledPIDController k_armPID = new ProfiledPIDController(0.0, 0.0, 0.0, 
-        new TrapezoidProfile.Constraints(0.0, 0.0));
+    public static final ProfiledPIDController k_armPID = new ProfiledPIDController(0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
     public static final double k_intakeSetpoint = 0.0;
     public static final double k_shootSetpoint = 0.0;
+    public static final double k_tolerance = 0.1;
 
     public static final double k_armDeadband = 0.2;
     public static final double k_upperBound = 0.0 + k_armEncoderOffset.getRotations();
