@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeConstants;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
@@ -52,7 +54,7 @@ public class Shooter extends SubsystemBase {
   public Command shootSpeaker() {
     return new SequentialCommandGroup(
       new InstantCommand(() -> setSpeakerSpeed()),
-      new InstantCommand(() -> waitCommand()),
+      new WaitCommand(ShooterConstants.k_waitTime),
       new InstantCommand(() -> intake.intake())
     );
   }
@@ -61,19 +63,9 @@ public class Shooter extends SubsystemBase {
   public Command shootAmp() {
     return new SequentialCommandGroup(
       new InstantCommand(() -> setAmpSpeed()),
-      new InstantCommand(() -> waitCommand()),
+      new WaitCommand(ShooterConstants.k_waitTime),
       new InstantCommand(() -> intake.intake())
     );
-  }
-
-  // Custom wait command to catch exceptions
-  public void waitCommand() {
-    try {
-      wait(ShooterConstants.k_waitTime);
-    }
-    catch (Exception e) {
-      System.err.println(e);
-    }
   }
 
   @Override

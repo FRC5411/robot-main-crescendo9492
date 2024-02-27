@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.shooter.ShooterConstants;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
@@ -43,19 +43,9 @@ public class Intake extends SubsystemBase {
   public Command retract() {
     return new SequentialCommandGroup(
       new InstantCommand(() -> outtake()),
-      new InstantCommand(() -> waitCommand()),
+      new WaitCommand(IntakeConstants.k_waitTime),
       new InstantCommand(() -> zero())
     );
-  }
-
-    // Custom wait command to catch exceptions
-  public void waitCommand() {
-    try {
-      wait(IntakeConstants.k_waitTime);
-    }
-    catch (Exception e) {
-      System.err.println(e);
-    }
   }
 
   @Override
