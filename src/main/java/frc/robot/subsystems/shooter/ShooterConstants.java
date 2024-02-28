@@ -9,5 +9,5 @@ public class ShooterConstants {
     public static final double k_shootZero = 0.0;
     public static final boolean k_isInverted = true;
 
-    public static final long k_waitTime = 1000; // milliseconds
+    public static final double k_waitTime = 1; 
 }

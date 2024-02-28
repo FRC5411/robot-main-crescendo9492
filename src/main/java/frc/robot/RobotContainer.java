@@ -40,12 +40,12 @@ public class RobotContainer {
 
     // Left bumper shoots Speaker, now shootSpeaker also includes moving intake also.
     operator.leftBumper()
-      .whileTrue(new InstantCommand(() -> shooter.shootSpeaker()))
+      .onTrue(shooter.shootSpeaker())
       .onFalse(new InstantCommand(() -> {shooter.zero(); intake.zero();}));
 
     // Left joystick CLICK shoots amp, also moves intake using one button
     operator.leftStick()
-      .whileTrue(new InstantCommand(() -> shooter.shootAmp()))
+      .whileTrue(shooter.shootAmp())
       .onFalse(new InstantCommand(() -> {shooter.zero(); intake.zero();}));
   }
 

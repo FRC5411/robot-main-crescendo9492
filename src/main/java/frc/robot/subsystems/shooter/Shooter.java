@@ -30,6 +30,7 @@ public class Shooter extends SubsystemBase {
     rightShootMotor = new CANSparkMax(ShooterConstants.k_rightShootMotorID, MotorType.kBrushless);
 
     leftShootMotor.setInverted(ShooterConstants.k_isInverted);
+    rightShootMotor.setInverted(ShooterConstants.k_isInverted);
   }
 
   // Set motor speeds to the speed needed to score Speaker
