@@ -40,7 +40,7 @@ public class RobotContainer {
 
     // Left bumper shoots Speaker, now shootSpeaker also includes moving intake also.
     operator.leftBumper()
-      .onTrue(shooter.shootSpeaker())
+      .onTrue(new InstantCommand(() -> shooter.setSpeakerSpeed()))
       .onFalse(new InstantCommand(() -> {shooter.zero(); intake.zero();}));
 
     // Left joystick CLICK shoots amp, also moves intake using one button
