@@ -32,10 +32,10 @@ public class SwerveConstants {
   public static final int k_BLCanID = 33;
   public static final int k_BRCanID = 34;
 
-  public static final Rotation2d k_FLEncoderOffset = Rotation2d.fromRotations(0.0);
-  public static final Rotation2d k_FREncoderOffset = Rotation2d.fromRotations(0.0);
-  public static final Rotation2d k_BLEncoderOffset = Rotation2d.fromRotations(0.0);
-  public static final Rotation2d k_BREncoderOffset = Rotation2d.fromRotations(0.0);
+  public static final Rotation2d k_FLEncoderOffset = Rotation2d.fromRotations(0.079834);
+  public static final Rotation2d k_FREncoderOffset = Rotation2d.fromRotations(0.028320);
+  public static final Rotation2d k_BLEncoderOffset = Rotation2d.fromRotations(-0.089600);
+  public static final Rotation2d k_BREncoderOffset = Rotation2d.fromRotations(-0.216797);
 
   public static final double stickDeadband = 0.2;
 
