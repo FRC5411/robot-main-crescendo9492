@@ -5,7 +5,7 @@ public class ShooterConstants {
     public static final int k_rightShootMotorID = 16;
     public static final int k_smartCurrentLimit = 40;
     public static final double k_shootSpeaker = 1.0;
-    public static final double k_shootAmp = 0.35;
+    public static final double k_shootAmp = 0.40;
     public static final double k_shootZero = 0.0;
     public static final boolean k_isInverted = true;
 

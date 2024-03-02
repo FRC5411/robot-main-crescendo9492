@@ -5,9 +5,11 @@
 package frc.robot.subsystems.shooter;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -23,11 +25,15 @@ public class Shooter extends SubsystemBase {
 
   private CANSparkMax leftShootMotor;
   private CANSparkMax rightShootMotor;
+  private CANSparkMax armMotor;
+  private RelativeEncoder armEncoder;
 
   public Shooter(Intake intake) {
     this.intake = intake;
     leftShootMotor = new CANSparkMax(ShooterConstants.k_leftShootMotorID, MotorType.kBrushless);
     rightShootMotor = new CANSparkMax(ShooterConstants.k_rightShootMotorID, MotorType.kBrushless);
+    armMotor = new CANSparkMax(18, MotorType.kBrushless);
+    armEncoder = armMotor.getEncoder();
 
     leftShootMotor.setInverted(ShooterConstants.k_isInverted);
     rightShootMotor.setInverted(ShooterConstants.k_isInverted);
@@ -69,9 +75,14 @@ public class Shooter extends SubsystemBase {
     );
   }
 
+  public Rotation2d getPosition() {
+    return Rotation2d.fromRotations(armEncoder.getPosition() + Rotation2d.fromRotations(0.0).getRotations());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("EncoderVal", getPosition().getRotations());
   }
 
   // Configure motors
