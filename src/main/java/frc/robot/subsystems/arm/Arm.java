@@ -112,7 +112,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Encoder Value", getPosition().getRotations());
+    SmartDashboard.putNumber("Encoder Val", getPosition().getRotations());
     SmartDashboard.putNumber("Arm Speed", armMotor.get());
     SmartDashboard.putNumber("Arm Current", armMotor.getOutputCurrent());
   }
