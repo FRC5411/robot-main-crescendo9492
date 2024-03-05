@@ -217,7 +217,8 @@ private void configureAzimuthMotor() {
     azimuthMotor.setIdleMode(DriveConstants.azimuthNeutralMode);
 
     azimuthEncoder.setPosition(0.0);
-    azimuthEncoder.setPositionConversionFactor(DriveConstants.azimuthConversionFactor);
+    //azimuthEncoder.setPositionConversionFactor(DriveConstants.azimuthConversionFactor);
+    //TODO: You didn't need a conversion factor here :P Raw units in rotations
 
     azimuthController.setP(DriveConstants.angleKP);
     azimuthController.setI(DriveConstants.angleKI);
