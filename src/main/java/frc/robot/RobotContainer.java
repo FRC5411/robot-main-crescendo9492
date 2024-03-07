@@ -4,37 +4,87 @@
 
 package frc.robot;
 
+import frc.robot.commands.TeleopSwerve;
+
+// import frc.robot.subsystems.Winch;
+
+//import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Swerve;
+
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.drive.DriveCommand;
-import frc.robot.subsystems.drive.Swerve;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+
+
+/**
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and trigger mappings) should be declared here.
+ */
 public class RobotContainer {
-  
-  private Swerve swerve;
-  private CommandXboxController driveController;
 
+    private final Swerve s_Swerve = new Swerve();
+
+    private final int translationAxis = XboxController.Axis.kLeftY.value;
+    private final int strafeAxis = XboxController.Axis.kLeftX.value;
+    private final int rotationAxis = XboxController.Axis.kRightX.value;
+
+    private final Joystick driver = new Joystick(0);
+    // The robot's subsystems and commands are defined here...
+    private final JoystickButton rotateWithTag = new JoystickButton(driver, XboxController.Button.kRightStick.value);
+    //private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kLeftStick.value);
+    private final JoystickButton driveA = new JoystickButton(driver, XboxController.Button.kA.value);
+    
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    swerve = new Swerve();
-    driveController = new CommandXboxController(Constants.driverPort);
-
-    swerve.setDefaultCommand(
-      new DriveCommand(
-        swerve, 
-        () -> -driveController.getLeftY(), 
-        () -> driveController.getLeftX(), 
-        () -> driveController.getRightX(), 
-        true
-      )
-    );
-  }
+        s_Swerve.setDefaultCommand(
+            new TeleopSwerve(
+                s_Swerve, 
+                () -> -driver.getRawAxis(translationAxis), 
+                () -> -driver.getRawAxis(strafeAxis), 
+                () -> -driver.getRawAxis(rotationAxis), 
+                () -> false,
+                () -> rotateWithTag.getAsBoolean(),
+                () -> driveA.getAsBoolean())
+        );
 
 
+        // Configure the button bindings
+        configureButtonBindings();
 
+        
+    }
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+    /**
+     * Use this method to define your button->command mappings. Buttons can be created by
+     * instantiating a {@link GenericHID} or one of its subclasses ({@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
+        /* Driver Buttons */
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro(), s_Swerve));
+    }
 
+    public Joystick getDriveController(){
+        return driver;
+      }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return null;
+    }
 }
