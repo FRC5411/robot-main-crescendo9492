@@ -26,7 +26,8 @@ public class ArmConstants {
     public static final ArmFeedforward k_armFeedforward = new ArmFeedforward(0.0, 3.0, 12.0 / k_armFreeSpeed, 0.0);
     public static final ProfiledPIDController k_armPID = new ProfiledPIDController(0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
     public static final double k_intakeSetpoint = 0.0;
-    public static final double k_shootSetpoint = 0.0;
+    public static final double k_ampSetpoint = 0.171999;
+    public static final double k_shootSetpoint = 0.0189998;
     public static final double k_tolerance = 0.1;
 
     public static final double k_armDeadband = 0.2;

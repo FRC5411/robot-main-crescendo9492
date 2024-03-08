@@ -47,7 +47,12 @@ public class Arm extends SubsystemBase {
     setSpeed(setPID(ArmConstants.k_shootSetpoint) + setfeedForward());
   }
 
-  // Depending on the value of the joysticks, move the arm up or down
+  // Moves arm to amp position to shoot note
+  public void goToAmpPos() {
+    setSpeed(setPID(ArmConstants.k_ampSetpoint) + setfeedForward());
+  }
+
+  // Depending on the value of the joysticks, move the arm up or down (manual)
   public void runArm(double voltage) {
 
     if (voltage > 0) setSpeed(ArmConstants.k_armSpeed + setfeedForward());
@@ -57,7 +62,7 @@ public class Arm extends SubsystemBase {
 
   // Calculate the motor speed based on PIDs
   public double setPID(double setpoint) {
-    return armController.calculate(getPosition().getRotations(), setpoint);
+    return armController.calculate(getPosition().getRotations(), getTicksToRotations(setpoint));
   }
 
   // Calculate the speed to move the arm up and down at the same speed (by taking into account gravity)
@@ -86,6 +91,10 @@ public class Arm extends SubsystemBase {
   // Get the position of the encdoer, taking into account offsets
   public Rotation2d getPosition() {
     return Rotation2d.fromRotations(armEncoder.getPosition() + ArmConstants.k_armEncoderOffset.getRotations());
+  }
+
+  public double getTicksToRotations(double ticks) {
+    return ticks / 42.00; // For our Neos, there 42 encoder ticks per revolution
   }
 
   // configure the arm motor, encoder, and PID controller

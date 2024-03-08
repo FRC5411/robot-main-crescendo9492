@@ -23,6 +23,7 @@ public class RobotContainer {
 
     arm = new Arm(operator.getHID());
 
+    // Manual:
     arm.setDefaultCommand(new ArmCommand(
       () -> operator.getRightY(),
       arm
@@ -34,6 +35,7 @@ public class RobotContainer {
   private void configureBindings() {
     operator.x().onTrue(new InstantCommand(() -> arm.goToIntakePos()));
     operator.y().onTrue(new InstantCommand(() -> arm.goToShootPos()));
+    operator.a().onTrue(new InstantCommand(() -> arm.goToAmpPos()));
   }
 
   
