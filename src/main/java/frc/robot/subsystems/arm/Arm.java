@@ -37,6 +37,10 @@ public class Arm extends SubsystemBase {
     configure();
   }
 
+  public void setRawArm(double speed) {
+    armMotor.set(speed);
+  }
+
   // Moves arm down to pick up note
   public void goToIntakePos() {
     setSpeed(setPID(ArmConstants.k_intakeSetpoint) + setfeedForward()); 
@@ -67,7 +71,7 @@ public class Arm extends SubsystemBase {
 
   // Calculate the speed to move the arm up and down at the same speed (by taking into account gravity)
   public double setfeedForward() {
-    return feedForward.calculate(getPosition().getRadians(), ArmConstants.k_armSpeed);
+    return feedForward.calculate(getPosition().getRadians(), ArmConstants.k_armSpeed) / 12.0;
   }
 
   // Sets the speed of the motors if it is within the bounds of the robot
@@ -76,7 +80,7 @@ public class Arm extends SubsystemBase {
       armMotor.set(armSpeed);
     }
     else {
-      armMotor.set(ArmConstants.k_speedZero);
+      armMotor.set(0.0);
     }
   }
 
@@ -99,12 +103,13 @@ public class Arm extends SubsystemBase {
 
   // configure the arm motor, encoder, and PID controller
   public void configure() {
+    armMotor.restoreFactoryDefaults();
     armMotor.setIdleMode(IdleMode.kBrake);
     armMotor.setSmartCurrentLimit(ArmConstants.k_smartCurrentLimit);
-    armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)ArmConstants.k_upperBound);
-    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)ArmConstants.k_lowerBound);
+    // armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    // armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    // armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)ArmConstants.k_upperBound);
+    // armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)ArmConstants.k_lowerBound);
     
     armEncoder.setPositionConversionFactor(ArmConstants.k_positionConversionFactor);
     armEncoder.setVelocityConversionFactor(ArmConstants.k_velocityConversionFactor);
@@ -124,5 +129,7 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("Encoder Val", getPosition().getRotations());
     SmartDashboard.putNumber("Arm Speed", armMotor.get());
     SmartDashboard.putNumber("Arm Current", armMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Arm Applied Output", armMotor.getAppliedOutput());
+    SmartDashboard.putNumber("Arm Input", armMotor.get());
   }
 }

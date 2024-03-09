@@ -34,6 +34,6 @@ public class ArmCommand extends Command {
   public void execute() {
     double verticalVal = MathUtil.applyDeadband(verticalSup.getAsDouble(), ArmConstants.k_armDeadband);
 
-    arm.runArm(verticalVal);
+    arm.setRawArm(-verticalVal);
   }
 }
