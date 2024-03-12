@@ -3,13 +3,13 @@ package frc.robot.subsystems.lights;
 public class LightConstants {
     
   // LED port - Must be a PWM header, not MXP or DIO - TO BE CONFIGURED:
-  public static final int k_LEDPort = 1;
+  public static final int k_LEDPort = 0;
 
   // Length of LEDs:
-  public static final int k_length = 15;
+  public static final int k_length = 32;
 
   // Wait Command length to set time for LEDs to blink:
-  public static final double k_waitTime = 0.5;
+  public static final double k_waitTime = 0.1;
 
   // Booleans of whether or not LEDs are orange, blue, or purple:
   public static boolean k_isOrange = false;

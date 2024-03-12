@@ -32,7 +32,8 @@ public class Light extends SubsystemBase {
   // Purple will be the default color of the LEDs (set to Eclipse)
   public void setLEDsPurple() {
     for (int i = 0; i < LEDBuffer.getLength(); i++) {
-      LEDBuffer.setRGB(i, 174, 55, 255);
+      //LEDBuffer.setRGB(i, 174, 55, 255);
+      LEDBuffer.setRGB(i, 95, 0, 160);
     }
 
     LEDs.setData(LEDBuffer);
@@ -43,7 +44,8 @@ public class Light extends SubsystemBase {
   // Solid Orange will be the signal for coopertition bonus (set to Flame)
   public void setLEDsOrange() {
     for (int i = 0; i < LEDBuffer.getLength(); i++) {
-      LEDBuffer.setRGB(i, 255, 94, 5);
+      //LEDBuffer.setRGB(i, 255, 94, 5);
+      LEDBuffer.setRGB(i, 250, 41, 0);
     }
 
     LEDs.setData(LEDBuffer);
@@ -54,14 +56,17 @@ public class Light extends SubsystemBase {
   // Solid Blue will be the signal for amplification bonus (set to Ocean)
   public void setLEDsBlue() {
     for (int i = 0; i < LEDBuffer.getLength(); i++) {
-      LEDBuffer.setRGB(i, 85, 206, 255);
+      // LEDBuffer.setRGB(i, 85, 206, 255);
+      LEDBuffer.setRGB(i, 0, 171, 240);
     }
 
     LEDs.setData(LEDBuffer);
-    LightConstants.k_isBlue = true;
     LightConstants.k_isOrange = false;
+    LightConstants.k_isBlue = true;
   }
 
+
+  
   // Blinking Orange twice will be the signal for note detection when inside the indexer
   public Command blinkLEDsOrange() {
     return new SequentialCommandGroup (
@@ -79,9 +84,12 @@ public class Light extends SubsystemBase {
   public Command toggleOrange() {
     if (LightConstants.k_isOrange) {
       return new InstantCommand(() -> setLEDsPurple());
-    }
+      }
+    
 
-    return new InstantCommand(() -> setLEDsOrange());
+    LightConstants.k_isOrange = true;
+    return new InstantCommand(() -> setLEDsOrange()); 
+  
   }
 
   // Toggle between Blue and Purple to signal for coopertition bonus
@@ -90,8 +98,26 @@ public class Light extends SubsystemBase {
       return new InstantCommand(() -> setLEDsPurple());
     }
 
+    // LightConstants.k_isBlue = true;
     return new InstantCommand(() -> setLEDsBlue());
   }
+
+  
+
+  private int m_rainbowFirstPixelHue = 1;
+  public void setRainbow() {
+    for (var i = 0; i < LEDBuffer.getLength(); i++) {
+      final var hue = (m_rainbowFirstPixelHue + (i*180 / LEDBuffer.getLength())) % 180;
+      LEDBuffer.setHSV(i, hue, 255, 128);
+    }
+
+    m_rainbowFirstPixelHue += 3;
+
+    m_rainbowFirstPixelHue %= 180;
+
+    LEDs.setData(LEDBuffer);
+  }
+
 
   @Override
   public void periodic() {

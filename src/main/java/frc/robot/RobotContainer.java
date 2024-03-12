@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.lights.Light;
 
@@ -17,7 +18,7 @@ public Light lights;
 
     lights = new Light();
 
-    driverController = new CommandXboxController(Constants.k_operatorID);
+    driverController = new CommandXboxController(Constants.k_driverID);
 
     lights.setLEDsPurple();
 
@@ -37,6 +38,19 @@ public Light lights;
       lights.toggleBlue()
     );
 
+    driverController.y().onTrue(
+      new InstantCommand(() -> lights.setLEDsPurple())
+    );
+
+    // The following button bindings were for testing (and fun) purposes
+    driverController.b().onTrue(
+      lights.blinkLEDsOrange()
+    );
+
+    driverController.x().onTrue(
+      new InstantCommand(() -> lights.setRainbow())
+    );
+  
   }
 
   public Command getAutonomousCommand() {
