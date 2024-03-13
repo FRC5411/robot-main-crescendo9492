@@ -6,16 +6,20 @@ package frc.robot.subsystems.lights;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.lights.Sensor;
+
 
 public class Light extends SubsystemBase {
 
   public AddressableLED LEDs;
   public AddressableLEDBuffer LEDBuffer;
+  private Sensor sensor;
 
   
 
@@ -65,19 +69,38 @@ public class Light extends SubsystemBase {
     LightConstants.k_isBlue = true;
   }
 
+  public void setLEDsWhite() {
+    for (int i = 0; i < LEDBuffer.getLength(); i++) {
+      // LEDBuffer.setRGB(i, 85, 206, 255);
+      LEDBuffer.setRGB(i, 255, 255, 255);
+    }
+
+    LEDs.setData(LEDBuffer);
+    LightConstants.k_isOrange = false;
+    LightConstants.k_isBlue = false;
+  }
 
   
   // Blinking Orange twice will be the signal for note detection when inside the indexer
-  public Command blinkLEDsOrange() {
-    return new SequentialCommandGroup (
-      new InstantCommand(() -> setLEDsOrange()),
-      new WaitCommand(LightConstants.k_waitTime),
-      new InstantCommand(() -> setLEDsPurple()),
-      new WaitCommand(LightConstants.k_waitTime),
-      new InstantCommand(() -> setLEDsOrange()),
-      new WaitCommand(LightConstants.k_waitTime),
-      new InstantCommand(() -> setLEDsPurple())
-    );
+  public void blinkLEDsOrange() {
+    if (sensor.getNoteDetected()) {
+      new SequentialCommandGroup (
+        new InstantCommand(() -> setLEDsOrange()),
+        new WaitCommand(LightConstants.k_waitTime),
+        new InstantCommand(() -> setLEDsWhite()),
+        new WaitCommand(LightConstants.k_waitTime),
+        new InstantCommand(() -> setLEDsOrange()),
+        new WaitCommand(LightConstants.k_waitTime),
+        new InstantCommand(() -> setLEDsWhite()),
+        new WaitCommand(LightConstants.k_waitTime),
+        new InstantCommand(() -> setLEDsOrange()),
+        new WaitCommand(LightConstants.k_waitTime),
+        new InstantCommand(() -> setLEDsWhite()),
+        new WaitCommand(LightConstants.k_waitTime),
+        new InstantCommand(() -> setLEDsPurple())
+      );
+    }
+
   }
   
   // Toggle between Orange and Purple to signal for coopertition bonus

@@ -14,4 +14,7 @@ public class LightConstants {
   // Booleans of whether or not LEDs are orange, blue, or purple:
   public static boolean k_isOrange = false;
   public static boolean k_isBlue = false;
+
+  // Sensor DIO port:
+  public static final int k_DIOPort = 0;
 }

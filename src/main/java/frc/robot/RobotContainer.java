@@ -44,7 +44,7 @@ public Light lights;
 
     // The following button bindings were for testing (and fun) purposes
     driverController.b().onTrue(
-      lights.blinkLEDsOrange()
+      new InstantCommand(() -> lights.blinkLEDsOrange())
     );
 
     driverController.x().onTrue(
